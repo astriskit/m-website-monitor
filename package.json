@@ -1,0 +1,28 @@
+{
+  "name": "website-monitor",
+  "version": "1.0.0",
+  "description": "A website monitoring tool.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astriskit/m-website-monitor.git"
+  },
+  "keywords": [
+    "website",
+    "monitor",
+    "website-monitoring"
+  ],
+  "author": "HS <dcotre.1760@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astriskit/m-website-monitor/issues"
+  },
+  "homepage": "https://github.com/astriskit/m-website-monitor#readme"
+}
