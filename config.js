@@ -17,6 +17,15 @@ config = {
 	sink_method: 'POST',
 	source_method: 'GET',
 },
+/**
+* Function to submit the data to the remote server. Uses config information to post data.
+* @func sensors_sink
+* @arg {String} sensor_id The id of the sensor to provide to swarmsense REST API.
+* @arg {Object} values The value to post to the  swarmsense REST API.
+* @arg {Number} values.code The response code while querying.
+* @arg {Number} values.time The response time estimated in completing the query.
+* @arg {String} values.body The response received from the server.
+**/
 sensors_sink = (sensor_id, values)=>{
 	let options = {
 		url:config.sink_host + ':' + config.sink_port + config.sink_path(sensor_id),
@@ -48,9 +57,19 @@ sensors_sink = (sensor_id, values)=>{
 		}
 	});
 },
+/**
+* A simple logger function for debugging purposes.
+* @func logger
+* @arg {String} mesg Message to print on the console.
+*/
 logger = (mesg)=>{
 	console.log(`Logger:> ${mesg}`)
 },
+/**
+* A function to fetch websites list from the swarmsense.
+* @func sensors_source
+* @arg {func} callback A callback to handle the response.
+*/
 sensors_source = (callback=null)=>{
 	let options = {
 		host:config.source_host,
@@ -99,6 +118,12 @@ sensors_source = (callback=null)=>{
 	});
 	req.end();
 },
+/**
+* A function to check a live status of a url
+* @func is_up
+* @arg {String} url Url to check.
+* @arg {func} callback A function to handle response. 
+**/
 is_up = (url, callback) => { //callback receives two argument - err, values.
 	if(!url.startsWith('http://') && !url.startsWith('https://')){
 		url = `http://${url}`
