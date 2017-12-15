@@ -5,7 +5,7 @@ config = {
 	debug:true,
 	reload_websites:true,
 	refresh_websites_in: 15*60*1000, // ms
-	refresh_status_in: 30*1000,
+	refresh_status_in: 30*1000, //ms
 	ss_token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTUxNTA0NjAyMywiaWF0IjoxNTEyNDU0MDIzfQ.9FKf7VcWusZ-_MH5PkmaqyEZKlqbrOej6mhYLRQTib4',
 	source_host:'45.79.8.213',
 	source_port:5000,
@@ -122,7 +122,7 @@ sensors_source = (callback=null)=>{
 * A function to check a live status of a url
 * @func is_up
 * @arg {String} url Url to check.
-* @arg {func} callback A function to handle response. 
+* @arg {func} callback A function to handle response.
 **/
 is_up = (url, callback) => { //callback receives two argument - err, values.
 	if(!url.startsWith('http://') && !url.startsWith('https://')){
