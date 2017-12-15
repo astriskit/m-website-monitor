@@ -22,7 +22,6 @@ function are_up(callback=null){
             logger(err)
           }
           else{
-            sensors_sink(website.id, values)
             logger(`${values.url}(est. response-time: ${values.time} ms): ${values.code}`)
             // logger(values.code)
           }
@@ -65,13 +64,13 @@ function index(){
   }
 }
 init_timer = config.refresh_websites_in;
-let timer_id = setInterval(()=>{
-  init_timer += 5000
-  if(!websites || init_timer % config.refresh_websites_in == 0){
-    config.reload_websites = true
-  }
-  index()
-}, config.refresh_status_in)
-// exports.module.monitor = ()=>{
-//   return timer_id
-// }
+exports.module.monitor = ()=>{
+  let timer_id = setInterval(()=>{
+    init_timer += 5000
+    if(!websites || init_timer % config.refresh_websites_in == 0){
+      config.reload_websites = true
+    }
+    index()
+  }, 5000)
+  return timer_id
+}

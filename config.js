@@ -1,12 +1,15 @@
 let http = require('http'),
 https = require('https'),
+request = require('request'),
 config = {
+	debug:true,
 	reload_websites:true,
-	refresh_websites_in: 6*1000, // ms
+	refresh_websites_in: 15*60*1000, // ms
+	refresh_status_in: 30*1000,
 	ss_token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTUxNTA0NjAyMywiaWF0IjoxNTEyNDU0MDIzfQ.9FKf7VcWusZ-_MH5PkmaqyEZKlqbrOej6mhYLRQTib4',
 	source_host:'45.79.8.213',
 	source_port:5000,
-	sink_host:'45.79.8.213',
+	sink_host:'http://45.79.8.213',
 	sink_port:5000,
 	company_id:'cb8528a117f8',
 	source_path:(company_id)=>`/companies/${company_id}/sensors`,
@@ -16,35 +19,34 @@ config = {
 },
 sensors_sink = (sensor_id, values)=>{
 	let options = {
-		host:config.sink_host,
-		port:config.sink_port,
-		path:config.sink_path(sensor_id),
+		url:config.sink_host + ':' + config.sink_port + config.sink_path(sensor_id),
+		// port:config.sink_port,
+		// path:config.sink_path(sensor_id),
 		method:config.sink_method,
+		formData:{
+			response_code:values.code,
+			reply_time:values.time,
+			response:{
+				value: Buffer.from(values.body),
+				options:{
+					filename: 'response.html',
+					contentType: 'text/html'
+				}
+			}
+		},
 		headers:{
 			'Authorization': `token ${config.ss_token}`,
-			'Content-Type': 'application/json'
+			'Content-Type':'multipart/form-data'
 		}
-	},
-	req = http.request(options, (res)=>{
-		let body = ''
-		res.on('data', (chunk)=>{
-			body += chunk
-		})
-		res.on('end', ()=>{
-			if(res.statusCode.startsWith('2')){
-				logger(`sensor_id: ${sensor_id} updated`)
-			}
-			else{
-				logger('Some issue!')
-			}
-			logger(`Response from posting: ${body}`)
-		})
+	}
+	request(options, (err, response, body)=>{
+		if(err){
+			logger(`Error occurred while posting. ${err}`)
+		}
+		else{
+			logger(`Success posting. Status-code: ${response.statusCode}`)
+		}
 	});
-	req.on('error', (e)=>{
-		logger('Could not update the values for sensor-id: '+sensor_id+' '+ e.message) // log it.
-	});
-	req.write(values)
-	req.end();
 },
 logger = (mesg)=>{
 	console.log(`Logger:> ${mesg}`)
@@ -106,15 +108,17 @@ is_up = (url, callback) => { //callback receives two argument - err, values.
 		module = https
 	}
 	let req = module.get(url, (res)=>{
+		// logger(url)
 		let body = '', time_it = 0 //in ms,
 		time_id = setInterval(()=>time_it+=1, 1), code=res.statusCode
 		res.on('data', (chunk)=>{
 			body += chunk
 		})
 		res.on('end', ()=>{
-			logger(url, body)
+			// logger(body)
 			time_id.close();
 			let values = {
+				url,
 				time:time_it,//ms
 				body,
 				code
