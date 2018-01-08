@@ -12,7 +12,7 @@ How to run
 ----------
 > Environment setup
   - Install Node and npm.
-  - Install request (`npm install request` | `yarn add request`)
+  - Install request (`npm install request` or `yarn add request`)
 > Download the source code from this repository.
 > Go inside the folder where you have copied the repository.
 > Change the company_id and ss_token using below mentioned information.
