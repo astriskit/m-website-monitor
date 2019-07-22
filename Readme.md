@@ -1,15 +1,16 @@
-Introduction
-------------
+# Introduction
+
 This is a simple tool to query websites/URLs, for their live status. Based on the response received from the server,
 the status is updated.
 
 It is handy to retrieve the urls over a REST API and submit the response over a REST API in the system.
 
-Development Stage : It is very primitive now. I hope to improvise in time.
------------------
+# Development Stage
 
-How to run
-----------
+It is very primitive now. I hope to improvise in time.
+
+# How to run
+
 > Environment setup
   - Install Node and npm.
   - Install request (`npm install request` or `yarn add request`)
@@ -18,16 +19,16 @@ How to run
 > Change the company_id and ss_token using below mentioned information.
 > Run - `node index.js`
 
-Working
--------
+# Working
+
 The above steps should start the script, which will work in following manner -
 
 > Start -> Check if `reload_websites` from `config` is `true` -> If yes, load websites from the source host. If, no,
 check the websites'(already loaded) status and push it to the sink host. -> Go to sleep for `refresh_status_in` milliseconds
 -> Wake and repeat from Start.
 
-Configurations
---------------
+# Configurations
+
 > `config.js` is the main configuration file in here. It can be updated in accordance of the needs.
 > In `config.js`, `config` variable contains various settings which can be changed -
   - `debug` : A boolean controlling the debug-logging functions.
